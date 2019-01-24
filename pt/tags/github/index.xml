@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Github on DevOps em pé</title>
+    <link>https://minac.github.io/pt/tags/github/</link>
+    <description>Recent content in Github on DevOps em pé</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Fri, 12 May 2017 19:04:17 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/pt/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Como apontar múltiplos domínios personalizados para o GitHub Pages usando Cloudflare</title>
+      <link>https://minac.github.io/pt/2017-05-12-multiple-domains-github-pages/</link>
+      <pubDate>Fri, 12 May 2017 19:04:17 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/2017-05-12-multiple-domains-github-pages/</guid>
+      <description>Recentemente eu criei uma empresa-de-um-só-homem para fazer consultoria informática (até arranjei uns cartões de negócios fixes!). O nome da empresa é Curious Elephant e parte do pacote de criação da empresa em Portugal é que o Estado Português oferece um domínio .pt grátis (curious-elephant.pt) e alojamento das páginas por um ano. O que eu queria fazer com isto era esquecer o alojamento das páginas e apontar o domínio da empresa para este website.</description>
+    </item>
+    
+  </channel>
+</rss>

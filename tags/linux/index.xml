@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Linux on Standing DevOps</title>
+    <link>https://minac.github.io/tags/linux/</link>
+    <description>Recent content in Linux on Standing DevOps</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 18 May 2014 13:30:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/tags/linux/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Today I had some fun with cows saying fortunes</title>
+      <link>https://minac.github.io/2015-05-18-today-i-had-some-fun-with-cows-saying-fortunes/</link>
+      <pubDate>Sun, 18 May 2014 13:30:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/2015-05-18-today-i-had-some-fun-with-cows-saying-fortunes/</guid>
+      <description>Today I had some fun with cows saying fortunes. If you are not in the Linux world, it will seem like I’ve been smoking some strange Dalmatian herbs, but if you have played at all with Linux you’ll know this happy face:
+_________________________________________ / You will be reincarnated as a toad; and \ \ you will be much happier. / ----------------------------------------- \ (__) (oo) /------\/ / | || * /\---/\ ~~ ~~  Now, who said geeks don’t know how to have fun?</description>
+    </item>
+    
+  </channel>
+</rss>

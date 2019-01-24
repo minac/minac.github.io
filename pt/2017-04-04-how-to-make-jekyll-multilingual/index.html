@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Como tornar o Jekyll multilingue - DevOps em pé</title>
+  
+  <meta name="description" content="Um dos poucos requisitos que existiam para este blog desde o início era que ele permitisse várias línguas. Isto é algo que se pode fazer facilmente com o WordPress, mas eu descobri as GitHub Pages e uma coisa levou a outra e… muitas horas mais tarde tinha um blog multilingue, após ter canibalizado o belo tema Whiteglass. Deixo aqui uma descrição de como decorreu o processo.
+Nota: O código não é bonito.">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="DevOps em pé">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">DevOps em pé</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">Como tornar o Jekyll multilingue</h1>
+    <p class="post-meta">Miguel David · 2017.4.4</p>
+  </header>
+  <div class="post-content">
+
+<p>Um dos poucos requisitos que existiam para este blog desde o início era que ele permitisse várias línguas. Isto é algo que se pode fazer facilmente com o <a href="https://wordpress.org/">WordPress</a>, mas eu descobri as <a href="https://pages.github.com/">GitHub Pages</a> e uma coisa levou a outra e… muitas horas mais tarde tinha um blog multilingue, após ter canibalizado o belo tema <a href="https://github.com/yous/whiteglass">Whiteglass</a>. Deixo aqui uma descrição de como decorreu o processo.</p>
+
+<p><strong>Nota</strong>: O código não é bonito. Pensa nisto como um Produto Mínimo Viável. :)</p>
+
+<h3 id="o-que-é-que-podes-aprender-com-este-post">O que é que podes aprender com este post</h3>
+
+<ul>
+<li>Como tornar o Jekyll multilingue</li>
+</ul>
+
+<p>​</p>
+
+<h3 id="eu-comecei-pelo">Eu comecei pelo&hellip;</h3>
+
+<p>Google, é claro! Eu estava a pensar assim &ldquo;Existem vários plugins para isto no WordPress, por isso certamente existe um para o Jekyll&rdquo;. Mas… estava redondamente errado! Para o Jekyll só existe uma língua no mundo inteiro num determinado momento.</p>
+
+<p>O Google ajudou e encontrei uns posts muito úteis:</p>
+
+<ul>
+<li><p><a href="https://www.sylvaindurand.org/making-jekyll-multilingual/">Este do Sylvain Durand</a> foi o mais útil</p></li>
+
+<li><p>Este, do <a href="https://developmentseed.org/blog/multilingual-jekyll-sites/">developmentseed</a>, não é tão detalhado, mas ainda assim deu a dica de usar categorias para simular/separar as línguas</p></li>
+
+<li><p>Finalmente estes dois, do <a href="https://github.com/drallgood/jekyll-multilingual">drallgood</a> e do <a href="https://github.com/Anthony-Gaudino/jekyll-multiple-languages-plugin">Anthony Gaudino</a> são boas alternativas, mas eu já tinha encontrado um tema, estava limitado em termos de plugins por causa das páginas no GitHub e não queria encher os meus posts de código de tradução</p></li>
+</ul>
+
+<p>​</p>
+
+<h3 id="eu-estava-bloqueado-por-isso-pedi-ajuda-ao-criador-do-tema">Eu estava bloqueado, por isso pedi ajuda ao criador do tema</h3>
+
+<p>O/A <a href="https://github.com/yous">Yous</a> foi a pessoa que codificou o tema <a href="https://github.com/yous/whiteglass">Whiteglass</a>. Ele/ela foi super simpático/a e deu várias dicas, apesar de ter dito que tornar o tema multilingue era algo que não estava nos planos.</p>
+
+<h3 id="então-peguei-nesta-informação-e-fiz-o-seguinte">Então, peguei nesta informação e fiz o seguinte&hellip;</h3>
+
+<h4 id="config-yml">_config.yml</h4>
+
+<p>No _config.yml, alterei três coisas (relevantes ao ser multilingue)</p>
+
+<pre><code class="language-yaml">lang: en
+languages: [&quot;en&quot;, &quot;pt&quot;]
+permalink: /:categories/:year/:month/:day/:title/
+</code></pre>
+
+<p>A linha 1 diz que a língua por omissão do blog é Inglês.</p>
+
+<p>A linha 2 cria um <code>array</code> de línguas possíveis no blog.</p>
+
+<p>A linha 3 diz que os URLs devem conter as categorias (vamos voltar a essa ideia mais tarde).</p>
+
+<h4 id="data-navigation-yml">_data/navigation.yml</h4>
+
+<p>O ficheiro _data/navigation.yml foi modificado para acrescentar menus nas várias línguas</p>
+
+<pre><code class="language-yaml">languages:
+  - language: &quot;en&quot;
+    links:
+    - title: &quot;About&quot;
+      url: /about/
+    - title: &quot;Archives&quot;
+      url: /archives/
+    - title: &quot;GitHub&quot;
+      url: https://github.com/minac
+    - title: &quot;pt&quot;
+      url: /pt/
+  - language: &quot;pt&quot;
+    links:
+    - title: &quot;Sobre&quot;
+      url: /sobre/
+    - title: &quot;Arquivos&quot;
+      url: /arquivos/
+    - title: &quot;GitHub&quot;
+      url: https://github.com/minac
+    - title: &quot;en&quot;
+      url: /
+</code></pre>
+
+<p>Não tem nada que expicar aqui, duas línguas, duas subárvores com os URLs respectivos.</p>
+
+<h4 id="includes-header-html">_includes/header.html</h4>
+
+<p>Depois eu precisei de incorporar isso no _includes/header.html</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-php">{% for item in site.data.navigation.languages %}
+  {% if item.language == page.lang %}
+    {% for link in item.links %}
+      {% if link.url contains &quot;http&quot; %}
+        {% assign url = link.url %}
+      {% else %}
+        {% assign url = link.url | relative_url %}
+      {% endif %}
+      &lt;a class=&quot;page-link&quot; href=&quot;{{ url }}&quot;&gt;{{ link.title }}&lt;/a&gt;
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>As únicas linhas importantes aqui são as primeiras dias. Tem um ciclo <code>for</code> e uma cláusula <code>if</code> para mostrar o menu na língua correcta.</p>
+
+<h4 id="layouts-archive-html">_layouts/archive.html</h4>
+
+<p>Agora a magia começa a acontecer no _layouts/archive.html</p>
+
+<p>Isto <code>&lt;h1 class=&quot;page-heading&quot;&gt;Blog Archive&lt;/h1&gt;</code> transforma-se nisto <code>&lt;h1 class=&quot;page-heading&quot;&gt;{{ page.title }}&lt;/h1&gt;</code> para evitar ter títulos <code>hard coded</code>.</p>
+
+<p>{% raw %}
+Isto <code>{% for post in site.posts %}</code> passa a ser isto:</p>
+
+<pre><code class="language-php">{% assign posts=site.posts | where: &quot;lang&quot;, page.lang %}
+{% for post in posts %}
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>Desta forma a página de arquivos passa a saber o que são línguas.</p>
+
+<p>E finalmente isto:</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-php">&lt;span class=&quot;post-meta&quot;&gt;{{ post.date | date: &quot;%b %-d, %Y&quot; }}{% if post.categories != empty %} • {% include category_links.html categories=post.categories %}{% endif %}&lt;/span&gt;
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>Transforma-se nisto:</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-php">&lt;span class=&quot;post-meta&quot;&gt;{{ post.date | date: &quot;%b %-d, %Y&quot; }}{% if post.tags != empty %} • {% for tag in post.tags %}{{ tag }}{% endfor %}{% endif %}&lt;/span&gt;
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>Como estou a usar as categorias para as línguas, decidi usar as tags para categorizar os posts. Desta forma cada post pode ter uma ou mais tags, mas o URL apenas reflect as categorias (línguas).</p>
+
+<h4 id="layouts-page-html-e-layouts-post-html">_layouts/page.html e_layouts/post.html</h4>
+
+<p>Agora que o trabalho mais duro foi feito, a _layouts/page.html e a _layouts/post.html torna-se fáceis.</p>
+
+<p>Aqui estão alguns meta-dados acrescentados a seguir ao título da página:</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-php">&lt;header class=&quot;post-header&quot;&gt;
+  &lt;h1 class=&quot;post-title&quot;&gt;{{ page.title | escape }}&lt;/h1&gt;
+  &lt;p class=&quot;post-meta&quot;&gt;&lt;time datetime=&quot;{{ page.date | date_to_xmlschema }}&quot; itemprop=&quot;datePublished&quot;&gt;{{ page.date | date: &quot;%b %-d, %Y&quot; }}&lt;/time&gt; • {% assign pages=site.pages | where: &quot;ref&quot;, page.ref | sort: 'lang' %}{% for page in pages %}&lt;a href=&quot;{{ page.url }}&quot; class=&quot;{{ page.lang }}&quot;&gt;{{ page.lang }}&lt;/a&gt; {% endfor %}&lt;/p&gt;
+&lt;/header&gt;
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>E aqui estão alguns meta-dados acrescentados a seguir ao ao título do post:</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-php">&lt;p class=&quot;post-meta&quot;&gt;&lt;time datetime=&quot;{{ page.date | date_to_xmlschema }}&quot; itemprop=&quot;datePublished&quot;&gt;{{ page.date | date: &quot;%b %-d, %Y&quot; }}&lt;/time&gt;{% if page.tags != empty %} • {% for tag in page.tags %}{{ tag }} • {% endfor %}{% endif %} {% assign posts=site.posts | where: &quot;ref&quot;, page.ref | sort: 'lang' %}{% for post in posts %}&lt;a href=&quot;{{ post.url }}&quot; class=&quot;{{ post.lang }}&quot;&gt;{{ post.lang }}&lt;/a&gt; {% endfor %} • {{ content | number_of_words }} words&lt;/p&gt;
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<h4 id="index-html">index.html</h4>
+
+<p>Por preguiça, decidi usar o <code>index.html</code> em vez do <code>home</code> que é o que o autor do tema sugere. Aqui está o conteúdo do mesmo:</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-php">&lt;div class=&quot;home&quot;&gt;
+  {% capture site_lang %}{{ site.lang | default: &quot;en&quot; }}{% endcapture %}
+  {% assign posts=site.posts | where:&quot;lang&quot;, page.lang %}
+  &lt;ul class=&quot;post-list&quot;&gt;
+    {% for post in posts %}
+      {% capture lang %}{% if post.lang != site_lang %}{{ post.lang }}{% else %}{{ site_lang }}{% endif %}{% endcapture %}
+      &lt;li{% if lang != empty %} lang=&quot;{{ lang }}&quot;{% endif %}&gt;
+        &lt;header class=&quot;post-header&quot;&gt;
+          &lt;h1 class=&quot;post-title&quot;&gt;
+            &lt;a class=&quot;post-link&quot; href=&quot;{{ post.url | relative_url }}&quot;&gt;{{ post.title | escape }}{% if post.external-url %} &amp;rarr;{% endif %}&lt;/a&gt;
+          &lt;/h1&gt;
+          &lt;p class=&quot;post-meta&quot;&gt;{{ post.date | date: &quot;%b %-d, %Y&quot; }}{% if post.tags != empty %} • {% for tag in post.tags %} {{ tag }} • {% endfor %}{% endif %}&lt;/p&gt;
+        &lt;/header&gt;
+        &lt;div class=&quot;post-content&quot;&gt;
+          {{ post.excerpt }}
+        &lt;/div&gt;
+        {% if post.content contains site.excerpt_separator %}
+          &lt;p class=&quot;post-continue&quot;&gt;
+            &lt;a href=&quot;{{ post.url | relative_url }}&quot;&gt;Read on &amp;rarr;&lt;/a&gt;
+          &lt;/p&gt;
+        {% endif %}
+      &lt;/li&gt;
+    {% endfor %}
+  &lt;/ul&gt;
+  {% include pagination.html %}
+&lt;/div&gt;
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<p>As linhas que interessam aqui são as 2, 3 e 6.</p>
+
+<h4 id="about-fica-sobre-archives-fica-arquivos">&lsquo;about&rsquo; fica &lsquo;sobre&rsquo;, &lsquo;archives&rsquo; fica &lsquo;arquivos&rsquo;</h4>
+
+<p>Depois de tudo isto feito, precisei de criar as páginas Portuguesas equivalentes às Inglesas. Então o <code>about.md</code> ganhou uma irmã <code>sobre.md</code> e o <code>archives.md</code> ganhou o <code>arquivos.md</code>. O conteúdo destes ficheiros é irrelevante neste caso.</p>
+
+<h3 id="árvore-de-ficheiros">Árvore de ficheiros</h3>
+
+<p>No final do projecto esta é a nossa árvore de ficheiros:</p>
+
+<pre><code class="language-sh">./_config.yml
+./_data
+./_data/navigation.yml
+./_includes
+./_includes/fonts.html
+./_includes/footer.html
+./_includes/footer_content.html
+./_includes/google_analytics.html
+./_includes/head.html
+./_includes/head_custom.html
+./_includes/header.html
+./_includes/pagination.html
+./_layouts
+./_layouts/archive.html
+./_layouts/category_archives.html
+./_layouts/default.html
+./_layouts/feed.xml
+./_layouts/page.html
+./_layouts/post.html
+./_sass
+./_sass/whiteglass
+./sass/whiteglass/base.scss
+./sass/whiteglass/layout.scss
+./sass/whiteglass/syntax-highlighting.scss
+./_sass/whiteglass.scss
+./about.md
+./sobre.md
+./archives.md
+./arquivos.md
+./assets
+./assets/main.scss
+./feed.xml
+./Gemfile
+./index.html
+./en
+./en/_posts
+./en/_posts/2017-03-04-new-blog-new-life.md
+./pt
+./pt/_posts
+./pt/_posts/2017-03-04-new-blog-new-life.md
+./pt.html
+</code></pre>
+
+<p>A maior parte dos ficheiros já faziam parte do tema. Aqueles a que eu quero chamar a atenção estão nas linhas <sup>26</sup>&frasl;<sub>27</sub>, <sup>28</sup>&frasl;<sub>29</sub> e a directoria de Inglês 35-37 e a de Português 38-40. O <code>pt.html</code> é o index.html, com um nome pouco imaginativo.</p>
+
+<p>Agora que tudo isto está feito. Como é que podemos criar um novo post em Português e em Inglês (ou apenas numa das línguas)?</p>
+
+<h3 id="front-matter-para-os-novos-posts">&ldquo;Front matter&rdquo; para os novos posts</h3>
+
+<p>Vejamos os <code>./en/_posts/2017-03-04-new-blog-new-life.md</code> e <code>./pt/_posts/2017-03-04-new-blog-new-life.md</code>. Aqui estão os meta-dados deles nas &ldquo;front matters&rdquo; respectivas. O Inglês:</p>
+
+<pre><code class="language-yaml">---
+layout: post
+title: &quot;New blog, new life&quot;
+tags: [blog]
+author: &quot;Miguel David&quot;
+date: 2017-03-04 16:12:07 +0000
+lang: en
+ref: new-blog-new-life
+---
+</code></pre>
+
+<p>E o Português:</p>
+
+<pre><code class="language-yaml">---
+layout: post
+title: &quot;Novo blog, nova vida&quot;
+tags: [blog]
+author: &quot;Miguel David&quot;
+date: 2017-03-04 16:12:07 +0000
+lang: pt
+ref: new-blog-new-life
+---
+</code></pre>
+
+<p>O que distingue estes ficheiros, aparte os conetúdos em si são o <code>título</code> e a <code>língua</code> que foram localizados. Tudo o resto fica o mesmo, incluindo a <code>ref</code>erência que é usada para podermos ligar as várias línguas de um mesmo post!</p>
+
+<p>Espero que ajude!</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/multilingue/">multilingue</a></li>
+      
+      <li><a href="https://minac.github.iotags/jekyll/">jekyll</a></li>
+      
+      <li><a href="https://minac.github.iotags/whiteglass/">whiteglass</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 DevOps em pé</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mysql on Standing DevOps</title>
+    <link>https://minac.github.io/tags/mysql/</link>
+    <description>Recent content in Mysql on Standing DevOps</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 09 Apr 2017 12:33:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>My MySQL Cookbook</title>
+      <link>https://minac.github.io/2017-04-09-mysql-cookbook/</link>
+      <pubDate>Sun, 09 Apr 2017 12:33:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/2017-04-09-mysql-cookbook/</guid>
+      <description>Over the years I&amp;rsquo;ve been accumulating notes on how to do quick operations in a variety of technologies. These have been, up to now, for my eyes only, and they aim to be the documentation I wish I found online on how to quickly get something done in tech X. Today I decided to share some notes of one of those technologies: MySQL.
+Disclaimer: These notes are valid at the moment of writing and not for all versions of MySQL (I am testing 5.</description>
+    </item>
+    
+  </channel>
+</rss>

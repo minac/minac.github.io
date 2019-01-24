@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Podcasts on Standing DevOps</title>
+    <link>https://minac.github.io/tags/podcasts/</link>
+    <description>Recent content in Podcasts on Standing DevOps</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 30 Mar 2017 13:23:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/tags/podcasts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Podcasts I listen to</title>
+      <link>https://minac.github.io/2017-03-30-podcasts/</link>
+      <pubDate>Thu, 30 Mar 2017 13:23:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/2017-03-30-podcasts/</guid>
+      <description>I was asked the other day by a friend going on a long trip which podcasts I listen to. I typically listen to them while running, but they&amp;rsquo;re all safe for driving as well. Disclaimer: The list is entirely personal and subjective.
+What you can learn from this post  Podcasts which I find interesting and actively listen to in different categories  Entrepeneurial  Side Hustle School From Scratch How I built this Open for business Startup Inc Uncensored  Economics  Freakanomics Radio</description>
+    </item>
+    
+  </channel>
+</rss>

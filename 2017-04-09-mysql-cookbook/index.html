@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>My MySQL Cookbook - Standing DevOps</title>
+  
+  <meta name="description" content="Over the years I&rsquo;ve been accumulating notes on how to do quick operations in a variety of technologies. These have been, up to now, for my eyes only, and they aim to be the documentation I wish I found online on how to quickly get something done in tech X. Today I decided to share some notes of one of those technologies: MySQL.
+Disclaimer: These notes are valid at the moment of writing and not for all versions of MySQL (I am testing 5.">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="Standing DevOps">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">Standing DevOps</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">My MySQL Cookbook</h1>
+    <p class="post-meta">Miguel David · 2017.4.9</p>
+  </header>
+  <div class="post-content">
+
+<p>Over the years I&rsquo;ve been accumulating notes on how to do quick operations in a variety of technologies. These have been, up to now, for my eyes only, and they aim to be the documentation I wish I found online on how to quickly get something done in tech X. Today I decided to share some notes of one of those technologies: MySQL.</p>
+
+<p><strong>Disclaimer</strong>: These notes are valid at the moment of writing and not for all versions of MySQL (I am testing 5.7.17 on macOS) as things continuously change.</p>
+
+<p><strong>Disclaimer 2</strong>: You are responsible for your data. Read everything written here with a critical mind and only apply it once you tested it. And I can never emphasise this too much: do backups!</p>
+
+<h3 id="what-you-can-learn-from-this-post">What you can learn from this post</h3>
+
+<ul>
+<li>How to install, config and start MySQL server on macOS</li>
+<li>Quick admin commands</li>
+<li>Who are you on the MySQL console?</li>
+<li>How to see running queries and stats</li>
+<li>How to kill a hanging query</li>
+<li>How to find slow queries</li>
+<li>How many queries are running and how many are sleeping connections?</li>
+<li>How to set the timeout for queries</li>
+<li>How to set the max connections in MySQL CLI</li>
+<li>How to set the max connections in the configuration file</li>
+<li>How to find the maximum concurrent user connections that happened on this server</li>
+<li>How to configure the Innodb buffer pool</li>
+<li>How to set the character set in MySQL</li>
+<li>How to get the top 10 biggest tables in size</li>
+<li>How to get the oldest tables with respect to update times</li>
+<li>How to get the data size (in MB) of the different databases</li>
+<li>How to get all users in MySQL and their permissions</li>
+<li>How to get the permissions for user MYUSER</li>
+<li>How to get the permissions for user &lsquo;website&rsquo; at IP &lsquo;1.1.1.1&rsquo;</li>
+<li>How to give full permission for user &lsquo;myuser&rsquo; at localhost on the database &lsquo;magento&rsquo;</li>
+<li>How to revoke permissions</li>
+<li>How to reset the password for user MYUSER</li>
+<li>How to reset the root password</li>
+<li>How to set user quotas</li>
+<li>How to import bulk data faster into MySQL</li>
+<li>How to export a table to a csv file</li>
+<li>How to get the table DDL (definitions file)</li>
+<li>How to do backups</li>
+<li>How to log a session in MySQL</li>
+<li>How to check if a table is healthy, fragmented and how to repair it</li>
+</ul>
+
+<h3 id="first-things-first">First things, first</h3>
+
+<h4 id="how-to-install-config-and-start-mysql-server-on-macos">How to install, config and start MySQL server on macOS</h4>
+
+<ol>
+<li>If you are just trying these out and don&rsquo;t happen to have a MySQL server to connect to you can download it <a href="https://dev.mysql.com/downloads/mysql/">from here</a>, uncompress the DMG file and click next until it&rsquo;s installed.</li>
+<li>Unfortunately the package does not alias the commands we need for direct use on the terminal so add the following to your .bash_profile:</li>
+</ol>
+
+<pre><code class="language-bash">echo &quot;alias mysql=/usr/local/mysql/bin/mysql&quot; &gt;&gt; ~/.bash_profile
+echo &quot;alias mysqladmin=/usr/local/mysql/bin/mysqladmin&quot; &gt;&gt; ~/.bash_profile
+echo &quot;alias mysqldumpslow=/usr/local/mysql/bin/mysqldumpslow&quot; &gt;&gt; ~/.bash_profile
+echo &quot;alias mysqldump=/usr/local/mysql/bin/mysqldump&quot; &gt;&gt; ~/.bash_profile
+source ~/.bash_profile
+</code></pre>
+
+<ol>
+<li>The only configuration we are going to make for now is to set a little file called .my.cnf to have our username and password (which was generated during the installation step). This is obviously not safe for production environments but for a playground it saves us typing the username and password every single time. So do the following: <code>vim ~/.my.cnf</code> and add the following to the file:</li>
+</ol>
+
+<pre><code class="language-ini">[client]
+user=root
+password=yourSecurePassword
+</code></pre>
+
+<p>For security&rsquo;s sake please change the permissions on the file so that only you can see it: <code>chmod 0600 ~/.my.cnf</code>.</p>
+
+<ol>
+<li><p>Now let us start the server. Go to <code>System Preferences</code> and you can see that there is a new icon on the bottom line called <code>MySQL</code>, click there and then on <code>Start MySQL Server</code> (input your password when it asks you)</p></li>
+
+<li><p>Go back to the terminal and type <code>mysql</code> and <em>voilá</em>! We&rsquo;re in!</p></li>
+
+<li><p>The password that was generated by the install package is temporary, so I would advise changing it once you&rsquo;re logged in like this:</p></li>
+</ol>
+
+<pre><code class="language-mysql">   mysql&gt; SET PASSWORD FOR 'root'@'localhost' = PASSWORD('myNewPassword');
+   Query OK, 0 rows affected, 1 warning (0.00 sec)
+</code></pre>
+
+<h4 id="quick-admin-commands">Quick admin commands</h4>
+
+<pre><code class="language-mysql"># Show all databases
+show databases;
+
+# See the SQL for the creation of a table
+show create table &lt;table&gt;;
+
+# See all the environment variables
+show global status;
+
+# Set the contents of a global variable
+set global &lt;VARIABLE_NAME&gt;=&lt;VALUE&gt;;
+
+# Get the contents of all variables starting with 'wait'
+show global variables like 'wait%';
+
+# Find all users on this database
+select User, Host from mysql.user;
+</code></pre>
+
+<h4 id="who-am-i">Who am I?</h4>
+
+<p>Not to get all philosophical on you but if you at one point forget the user you are logged in as do this to find out:</p>
+
+<pre><code class="language-mysql">SELECT USER(),CURRENT_USER();
+</code></pre>
+
+<p>USER() reports how you attempted to authenticate in MySQL
+CURRENT_USER() reports how you were allowed to authenticate in MySQL</p>
+
+<h3 id="on-queries">On queries</h3>
+
+<h4 id="how-to-see-running-queries-and-stats">How to see running queries and stats</h4>
+
+<pre><code class="language-bash">mysqladmin proc stat --verbose
++----+------+-----------+----+---------+------+----------+-----------------------+
+| Id | User | Host      | db | Command | Time | State    | Info                  |
++----+------+-----------+----+---------+------+----------+-----------------------+
+| 10 | root | localhost |    | Query   | 0    | starting | show full processlist |
++----+------+-----------+----+---------+------+----------+-----------------------+
+Uptime: 404  Threads: 1  Questions: 11  Slow queries: 0  Opens: 106  Flush tables: 1  Open tables: 99  Queries per second avg: 0.027
+</code></pre>
+
+<p>This command allows us to see what&rsquo;s going on without actually having to log in to the MySQL CLI. You get all the running queries, the uptime of the server, how many of those queries are slow, how many queries are being executed per second, if a query has gone zombie on you and a few others.</p>
+
+<p>As you can see in the <code>Info</code> bit, one of the command being encapsulated by this one is</p>
+
+<pre><code class="language-mysql">mysql&gt; show full processlist;
+</code></pre>
+
+<p>This means that you can do the same things in the MySQL CLI.</p>
+
+<h4 id="how-to-kill-a-hanging-query">How to kill a hanging query</h4>
+
+<p>Imagine that, from the list above, you have one query on your list that is taking forever (and by forever I mean a completely subjective number of seconds in the <code>Time</code> column). Then you can simply kill it like you would a process on your Mac.</p>
+
+<pre><code class="language-mysql">mysql&gt; show full processlist;
++----+------+-----------+------+---------+------+------------+-----------------------+
+| Id | User | Host      | db   | Command | Time | State      | Info                  |
++----+------+-----------+------+---------+------+------------+-----------------------+
+| 11 | root | localhost | NULL | Query   |    0 | starting   | show full processlist |
+| 12 | root | localhost | NULL | Query   |   17 | User sleep | select sleep(100)     |
++----+------+-----------+------+---------+------+------------+-----------------------+
+2 rows in set (0.00 sec)
+mysql&gt; kill 12;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre>
+
+<h4 id="how-to-find-slow-queries">How to find slow queries</h4>
+
+<p>MySQL not only comes with an opinion on what a &ldquo;slow query&rdquo; means, but also comes with a nifty little tool to parse the slow query log files and show you a summary called <a href="https://dev.mysql.com/doc/refman/5.7/en/mysqldumpslow.html"><strong>mysqldumpslow</strong></a>.</p>
+
+<p>From the <a href="https://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html">MySQL docs</a>:</p>
+
+<blockquote>
+<p>The slow query log consists of SQL statements that took more than <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_long_query_time"><code>long_query_time</code></a> seconds to execute and required at least <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_min_examined_row_limit"><code>min_examined_row_limit</code></a> rows to be examined. The minimum and default values of  <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_long_query_time"><code>long_query_time</code></a> are 0 and 10, respectively.</p>
+</blockquote>
+
+<p>And a caveat:</p>
+
+<blockquote>
+<p>By default, administrative statements are not logged, nor are queries that do not use indexes for lookups. This behavior can be changed using <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_log_slow_admin_statements"><code>log_slow_admin_statements</code></a> and <a href="https://dev.mysql.com/doc/refman/5.7/en/server-system-variables.html#sysvar_log_queries_not_using_indexes"><code>log_queries_not_using_indexes</code></a></p>
+</blockquote>
+
+<p>By default, slow queries are not logged. So let&rsquo;s activate them!</p>
+
+<pre><code class="language-sh"># Activate slow query log
+mysql&gt; set global slow_query_log='ON';
+# max 5 seconds
+mysql&gt; set global long_query_time='5';
+# These values are valid ONLY until the database server is restarted! As an alternative do it in the config file
+# If not already created, create the file
+sudo touch /etc/my.cnf
+# Change owner to yourself
+sudo chown `whoami` /etc/my.cnf
+# Add content
+echo &quot;[mysqld]&quot; &gt;&gt; /etc/my.cnf
+echo &quot;slow_query_log=1&quot; &gt;&gt; /etc/my.cnf
+# You can also activate the following, but beware that the logfile may grow fast
+echo &quot;log_queries_not_using_indexes=1&quot; &gt;&gt; /etc/my.cnf
+echo &quot;log_slow_admin_statements=1&quot; &gt;&gt; /etc/my.cnf
+</code></pre>
+
+<p>If you want to find out where the log is going to:</p>
+
+<pre><code class="language-mysql">mysql&gt; show global variables like 'slow_query_log_file';
++---------------------+----------------------------------------------+
+| Variable_name       | Value                                        |
++---------------------+----------------------------------------------+
+| slow_query_log_file | /usr/local/mysql/data/&lt;YOUR_LAPTOP&gt;-slow.log |
++---------------------+----------------------------------------------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<p>So now you can test this!</p>
+
+<pre><code class="language-mysql">mysql&gt; select sleep(11);
++-----------+
+| sleep(11) |
++-----------+
+|         0 |
++-----------+
+1 row in set (11.01 sec)
+</code></pre>
+
+<p>And then <code>sudo tail -f /usr/local/mysql/data/&lt;YOUR_LAPTOP&gt;-slow.log</code></p>
+
+<pre><code>/usr/local/mysql/bin/mysqld, Version: 5.7.17 (MySQL Community Server (GPL)). started with:
+Tcp port: 3306  Unix socket: /tmp/mysql.sock
+Time                 Id Command    Argument
+# Time: 2017-04-09T12:57:07.073262Z
+# User@Host: root[root] @ localhost []  Id:     5
+# Query_time: 11.005275  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 0
+SET timestamp=1491742627;
+select sleep(11);
+</code></pre>
+
+<p>Now you can use <code>mysqldumpslow</code> to show you a nice summary of the slow queries of your database (once you have a few):</p>
+
+<pre><code class="language-bash">sudo /usr/local/mysql/bin/mysqldumpslow /usr/local/mysql/data/&lt;YOUR_LAPTOP&gt;-slow.log
+
+# Or the top 10 slow queries by count
+sudo /usr/local/mysql/bin/mysqldumpslow -t 10 -s c /usr/local/mysql/data/&lt;YOUR_LAPTOP&gt;-slow.log
+
+# Or the top 10 slow queries by time spent
+sudo /usr/local/mysql/bin/mysqldumpslow -t 10 -s t /usr/local/mysql/data/&lt;YOUR_LAPTOP&gt;-slow.log
+</code></pre>
+
+<h4 id="how-many-queries-are-running-and-how-many-are-sleeping-connections">How many queries are running and how many are sleeping connections?</h4>
+
+<pre><code class="language-bash"># Running queries
+mysqladmin processlist |wc -l
+# Sleeping queries
+mysqladmin processlist |grep -i sleep|wc -l
+</code></pre>
+
+<h3 id="configuration">Configuration</h3>
+
+<h4 id="how-to-set-the-timeout-for-queries">How to set the timeout for queries</h4>
+
+<pre><code class="language-mysql"># What is the default duration that a query can run for?
+mysql&gt; show global variables like 'wait_timeout';
++---------------+-------+
+| Variable_name | Value |
++---------------+-------+
+| wait_timeout  | 28800 |
++---------------+-------+
+1 row in set (0.01 sec)
+# This means 8 hours!
+# Let's set it to 10 minutes
+mysql&gt; set global wait_timeout=600;
+Query OK, 0 rows affected (0.00 sec)
+</code></pre>
+
+<h4 id="how-to-set-the-max-connections-in-mysql-cli">How to set the max connections in MySQL CLI</h4>
+
+<pre><code class="language-mysql">mysql&gt; show global variables like 'max_connections';
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| max_connections | 151   |
++-----------------+-------+
+1 row in set (0.00 sec)
+
+mysql&gt; set global max_connections=170;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql&gt; show global variables like 'max_connections';
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| max_connections | 170   |
++-----------------+-------+
+1 row in set (0.00 sec)
+
+# This value is valid ONLY until the database server is restarted!
+</code></pre>
+
+<h4 id="how-to-set-the-max-connections-in-the-configuration-file">How to set the max connections in the configuration file</h4>
+
+<pre><code class="language-sh"># If you're on a Mac, you have to create the file and add the max_connections to it
+sudo touch /etc/my.cnf
+# Change owner to yourself
+sudo chown `whoami` /etc/my.cnf
+# Add content
+echo &quot;[mysqld]&quot; &gt;&gt; /etc/my.cnf
+echo &quot;max_connections=505&quot; &gt;&gt; /etc/my.cnf
+# Go to System Preferences and restart MySQL
+# And query again
+mysql&gt; show global variables like 'max_connections';
++-----------------+-------+
+| Variable_name   | Value |
++-----------------+-------+
+| max_connections | 505   |
++-----------------+-------+
+1 row in set (0.00 sec)
+</code></pre>
+
+<h4 id="how-to-find-the-maximum-concurrent-user-connections-that-happened-on-this-server">How to find the maximum concurrent user connections that happened on this server</h4>
+
+<pre><code class="language-mysql">mysql&gt; show global status like &quot;%max_used_connections%&quot;;
+</code></pre>
+
+<h4 id="how-to-configure-the-innodb-buffer-pool">How to configure the Innodb buffer pool</h4>
+
+<p>Ideally you want the buffer pool size to be equal to the size of your innodb data files. If you can&rsquo;t get to that:</p>
+
+<blockquote>
+<p>On a dedicated database server, you might set the buffer pool size to 80% of the machine&rsquo;s physical memory size.</p>
+</blockquote>
+
+<p>You can set the buffer pool size in the my.cnf config file like so:</p>
+
+<pre><code class="language-sh">[mysqld]
+...
+innodb_buffer_pool_size = 2G
+...
+</code></pre>
+
+<p>Or dynamically (from MySQL v.5.7.5) on the MySQL CLI like so:</p>
+
+<pre><code class="language-mysql"># 2G x 1024 x 1024 x 1024 to get bytes
+mysql&gt; set global innodb_buffer_pool_size=2147483648;
+</code></pre>
+
+<h4 id="how-to-set-the-character-set-in-mysql">How to set the character set in MySQL</h4>
+
+<pre><code class="language-ini"># Add to [mysqld] section of /etc/my.cnf:
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+</code></pre>
+
+<h3 id="getting-info">Getting info</h3>
+
+<h4 id="how-to-get-the-top-10-biggest-tables-in-size">How to get the top 10 biggest tables in size</h4>
+
+<pre><code class="language-mysql">SELECT TABLE_SCHEMA, TABLE_NAME,data_length/1024*1024 FROM `information_schema`.`TABLES` WHERE `TABLE_SCHEMA` !='information_schema' AND `TABLE_SCHEMA` !='mysql' ORDER BY `data_length` DESC LIMIT 10;
+</code></pre>
+
+<h4 id="how-to-get-the-oldest-tables-with-respect-to-update-times">How to get the oldest tables with respect to update times</h4>
+
+<pre><code class="language-mysql">SELECT CONCAT (`TABLE_SCHEMA`, &quot;.&quot; , `TABLE_NAME`) as name , `UPDATE_TIME` FROM `TABLES` WHERE `UPDATE_TIME` IS NOT NULL ORDER BY `UPDATE_TIME` LIMIT 10;
+</code></pre>
+
+<h4 id="how-to-get-the-data-size-in-mb-of-the-different-databases">How to get the data size (in MB) of the different databases</h4>
+
+<pre><code class="language-mysql">SELECT table_schema &quot;Database Name&quot;, sum( data_length + index_length ) / 1024 / 1024 &quot;Data Base Size in MB&quot; FROM information_schema.TABLES GROUP BY table_schema ;
+</code></pre>
+
+<h3 id="users">Users</h3>
+
+<h4 id="how-to-get-all-users-in-mysql-and-their-permissions">How to get all users in MySQL and their permissions</h4>
+
+<pre><code class="language-mysql">SELECT * from `INFORMATION_SCHEMA`.`USER_PRIVILEGES`;
+</code></pre>
+
+<h4 id="how-to-get-the-permissions-for-user-myuser">How to get the permissions for user MYUSER</h4>
+
+<pre><code class="language-mysql">SELECT * from INFORMATION_SCHEMA.USER_PRIVILEGES where grantee like '%MYUSER%';
+</code></pre>
+
+<h4 id="how-to-get-the-permissions-for-user-website-at-ip-1-1-1-1">How to get the permissions for user &lsquo;website&rsquo; at IP &lsquo;1.1.1.1&rsquo;</h4>
+
+<pre><code class="language-mysql">SHOW GRANTS FOR website@'1.1.1.1';
+</code></pre>
+
+<h4 id="how-to-give-full-permission-for-user-myuser-at-localhost-on-the-database-magento">How to give full permission for user &lsquo;myuser&rsquo; at localhost on the database &lsquo;magento&rsquo;</h4>
+
+<pre><code class="language-mysql">GRANT ALL PRIVILEGES ON magento.* TO 'myuser'@'localhost';
+</code></pre>
+
+<h4 id="how-to-revoke-permissions">How to revoke permissions</h4>
+
+<pre><code class="language-mysql">REVOKE SELECT,INSERT,UPDATE,DELETE ON mydatabase.* FROM 'myuser'@'localhost';
+</code></pre>
+
+<h4 id="how-to-reset-the-password-for-user-myuser">How to reset the password for user MYUSER</h4>
+
+<pre><code class="language-mysql">use mysql;
+set password for '&lt;MYUSER&gt;'@'%' = PASSWORD('myPass');
+flush privileges;
+</code></pre>
+
+<h4 id="how-to-reset-the-root-password">How to reset the root password</h4>
+
+<pre><code class="language-sh"># Add this line to the beginning of /etc/my.cnf ([mysqld] section):
+init_file=/var/lib/mysql/mysql.init
+
+# Create file /var/lib/mysql/mysql.init with the following contents:
+SET PASSWORD FOR 'root'@'localhost's=PASSWORD('mynewpassword');
+FLUSH PRIVILEGES;
+
+# Change the owner to the local MySQL user
+chown &lt;MYSQL_USER&gt; /var/lib/mysql/mysql.init
+
+# Restart the server
+# Delete the mysql.init file and remove the init_file line from /etc/my.cnf
+</code></pre>
+
+<h4 id="how-to-set-user-quotas">How to set user quotas</h4>
+
+<p>This is done through the GRANTS that the user has on the database. You can control MAX_CONNECTIONS_PER_HOUR, MAX_QUERIES_PER_HOUR, MAX_UPDATES_PER_HOUR, MAX_USER_CONNECTIONS.</p>
+
+<p>One example:</p>
+
+<pre><code class="language-mysql">GRANT ALL ON mydatabase.* TO 'myuser'@'%' WITH MAX_QUERIES_PER_HOUR 100 MAX_UPDATES_PER_HOUR 10;
+</code></pre>
+
+<h3 id="import-export">Import/Export</h3>
+
+<h4 id="how-to-import-bulk-data-faster-into-mysql">How to import bulk data faster into MySQL</h4>
+
+<pre><code class="language-mysql"># The trick here is to disable indexes for the duration of the bulk import, so...
+ALTER TABLE table_name DISABLE KEYS;
+# ...import...
+ALTER TABLE table_name ENABLE KEYS;
+</code></pre>
+
+<h4 id="how-to-export-a-table-to-a-csv-file">How to export a table to a csv file</h4>
+
+<pre><code class="language-sh">mysql &lt;MYDATABASE&gt; -e &quot;SELECT * FROM &lt;MYTABLE&gt;&quot; | sed 's/\t/&quot;,&quot;/g;s/^/&quot;/;s/$/&quot;/;' &gt; &lt;MYTABLE&gt;.csv
+</code></pre>
+
+<h4 id="how-to-get-the-table-ddl-definitions-file">How to get the table DDL (definitions file)</h4>
+
+<pre><code class="language-sh">mysqldump -f -d --single-transaction &lt;MYTABLE&gt; &gt; ~/Desktop/createMyTable.sql
+</code></pre>
+
+<h4 id="how-to-do-backups">How to do backups</h4>
+
+<pre><code class="language-mysql"># Backup all databases
+mysqldump --all-databases &gt; ~/Desktop/fullBackup.sql
+
+# Backup just mydb
+mysqldump --databases mydb &gt; ~/Desktop/mydbBackup.sql
+
+# Backup just mytable in mydb
+mysqldump mydb mytable &gt; ~/Desktop/mytableBackup.sql
+</code></pre>
+
+<h4 id="how-to-log-a-session-in-mysql">How to log a session in MySQL</h4>
+
+<pre><code class="language-mysql">mysql&gt; tee mysession.log
+Logging to file 'mysession.log'
+</code></pre>
+
+<h3 id="others">Others</h3>
+
+<h4 id="how-to-check-if-a-table-is-healthy-fragmented-and-how-to-repair-it">How to check if a table is healthy, fragmented and how to repair it</h4>
+
+<pre><code class="language-mysql">mysql&gt; check table &lt;MYTABLE&gt;;
+mysql&gt; repair table &lt;MYTABLE&gt;;
+</code></pre>
+
+<p>I hope this helps!</p>
+
+<p>If you find mistakes with these recipes, feel free to raise an <a href="https://github.com/minac/minac.github.io/issues">issue here</a>.</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/mysql/">mysql</a></li>
+      
+      <li><a href="https://minac.github.iotags/cookbook/">cookbook</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Standing DevOps</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+

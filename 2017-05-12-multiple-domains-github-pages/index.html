@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>How to get multiple domains pointing to GitHub Pages using Cloudflare - Standing DevOps</title>
+  
+  <meta name="description" content="I recently created a one-man-company to do IT Infrastructure consulting (I even got some cute business cards!). The name of the company is Curious Elephant and as part of creating the company in Portugal I get free DNS (curious-elephant.pt) and web hosting for a year. So I ditched the web hosting and wanted to simply point the company URL to this website.
+What you can learn from this post  How not to add multiple custom domains to GitHub Pages How setup domain redirection in Cloudflare  The naive approach As you may or may not have noticed this is done using Jekyll and GitHub Pages.">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="Standing DevOps">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">Standing DevOps</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">How to get multiple domains pointing to GitHub Pages using Cloudflare</h1>
+    <p class="post-meta">Miguel David · 2017.5.12</p>
+  </header>
+  <div class="post-content">
+
+<p>I recently created a one-man-company to do IT Infrastructure consulting (I even got some cute business cards!). The name of the company is <em>Curious Elephant</em> and as part of creating the company in Portugal I get free DNS (curious-elephant.pt) and web hosting for a year. So I ditched the web hosting and wanted to simply point the company URL to this website.</p>
+
+<h3 id="what-you-can-learn-from-this-post">What you can learn from this post</h3>
+
+<ul>
+<li>How <strong>not</strong> to add multiple custom domains to GitHub Pages</li>
+<li>How setup domain redirection in Cloudflare</li>
+</ul>
+
+<h3 id="the-naive-approach">The naive approach</h3>
+
+<p>As you may or may not have noticed this is done using Jekyll and GitHub Pages. And it already has a custom domain name (migueldavid.eu) pointing to it.</p>
+
+<p>Naively, I tried simply setting up a CNAME record for curious-elephant.pt to minac.github.io and added the new domain in the CNAME file of the repo. It <strong>didn&rsquo;t work</strong>.</p>
+
+<h3 id="the-cloudflare-way">The Cloudflare way</h3>
+
+<p>As I read on <a href="https://help.github.com/articles/troubleshooting-custom-domains/#multiple-domains-in-cname-file">GitHub Pages help</a> and on <a href="http://stackoverflow.com/questions/16454088/can-github-pages-cname-file-contain-more-than-one-domain">stackoverflow</a> (where else?), the use case of multiple custom domains pointing to your github website simply is not implemented. One can create a second repo and push the same code to both repos and have a CNAME in each of the repos, but this sounds like a silly approach to me.</p>
+
+<p>But there is DNS redirection magic offered by many domain registrars or name servers. Enter Cloudflare.</p>
+
+<p>For clarity here are the relevant DNS records (the IPs are github&rsquo;s IPs):</p>
+
+<table>
+<thead>
+<tr>
+<th>Record type</th>
+<th>Name</th>
+<th>Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>migueldavid.eu</td>
+<td>192.30.252.153</td>
+</tr>
+
+<tr>
+<td>A</td>
+<td>migueldavid.eu</td>
+<td>192.30.252.154</td>
+</tr>
+
+<tr>
+<td>CNAME</td>
+<td>www</td>
+<td>migueldavid.eu</td>
+</tr>
+</tbody>
+</table>
+
+<p>A quick search on their help area led to Page Rules, so I quickly created this:</p>
+
+<p><img src="/assets/pagerules.png" alt="Page Rule in Cloudflare" /></p>
+
+<p>After a minute or so I could type my new custom domain and come straight to this website.</p>
+
+<p><strong>BONUS</strong>: The rule is setup so that if I type in something like curious-elephant.pt/about it seamlessly redirects to migueldavid.eu/about. :)</p>
+
+<p>I hope this helps!</p>
+
+<p>If you find mistakes with these recipes, feel free to raise an <a href="https://github.com/minac/minac.github.io/issues">issue here</a>.</p>
+
+<p>For a more detailed explanation on the DNS records and http &gt; https redirection, check <a href="https://olney.ai/category/2018/07/30/ai.html">Andrew Molney&rsquo;s post</a>.</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/github/">github</a></li>
+      
+      <li><a href="https://minac.github.iotags/cloudflare/">cloudflare</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Standing DevOps</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>An ansible role for Anchor CMS - Standing DevOps</title>
+  
+  <meta name="description" content="What you can learn from this post  How to install Anchor CMS How to write an ansible role ready for Ansible Galaxy  What we want to do In broad strokes, this is what we want to do:
+ Update your system apt-get update &amp;&amp; apt-get upgrade
+ Install the required packages apt-get install unzip vim apache2 libapache2-mod-php5 mysql-server php5-curl php5-mcrypt php5-gd php5-mysql
+ Secure your mysql install">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="Standing DevOps">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">Standing DevOps</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">An ansible role for Anchor CMS</h1>
+    <p class="post-meta">Miguel David · 2017.3.30</p>
+  </header>
+  <div class="post-content">
+
+<h3 id="what-you-can-learn-from-this-post">What you can learn from this post</h3>
+
+<ul>
+<li>How to install Anchor CMS</li>
+<li>How to write an ansible role ready for <a href="https://galaxy.ansible.com/">Ansible Galaxy</a></li>
+</ul>
+
+<h3 id="what-we-want-to-do">What we want to do</h3>
+
+<p>In broad strokes, this is what we want to do:</p>
+
+<ol>
+<li><p>Update your system
+<code>apt-get update &amp;&amp; apt-get upgrade</code></p></li>
+
+<li><p>Install the required packages
+<code>apt-get install unzip vim apache2 libapache2-mod-php5 mysql-server php5-curl php5-mcrypt php5-gd php5-mysql</code></p></li>
+
+<li><p>Secure your mysql install</p></li>
+
+<li><p>Edit /root/.my.cnf in case you want to get into Mysql from the console without typing a password
+<code>vim /root/.my.cnf</code></p></li>
+</ol>
+
+<pre><code class="language-ini">[client]
+user = root
+password = &lt;YourPassword&gt;
+</code></pre>
+
+<ol>
+<li><p>Create the database
+To get in: <code>mysql</code>
+To create the database: <code>mysql&gt; create database anchor; quit</code></p></li>
+
+<li><p>Check your firewall to allow for ports SSH and HTTP outbound
+<code>ufw status</code>
+or
+<code>iptables -nvL</code></p></li>
+
+<li><p>Get anchor
+<code>cd /var/www/html; wget http://anchorcms.com/download -O anchor.zip; unzip anchor.zip</code></p></li>
+
+<li><p>Adjust permissions
+<code>chown -R www-data:www-data anchor-cms</code></p></li>
+
+<li><p>Setup apache to allow for .htaccess
+<code>sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf</code></p></li>
+
+<li><p>Enable apache modules
+<code>a2enmod rewrite</code></p></li>
+
+<li><p>Add the .htaccess to the base directory ( /var/www/html/anchor-cms/.htaccess )</p></li>
+</ol>
+
+<pre><code class="language-sh">Options -indexes
+&lt;IfModule mod_rewrite.c&gt;
+RewriteEngine On
+RewriteBase /
+
+# Allow any files or directories that exist to be displayed directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite all other URLs to index.php/URL
+RewriteRule ^(.*)$ index.php/$1 [L]
+&lt;/IfModule&gt;
+
+&lt;IfModule !mod_rewrite.c&gt;
+ErrorDocument 404 index.php
+&lt;/IfModule&gt;
+</code></pre>
+
+<ol>
+<li><p>Restart services
+<code>service apache2 restart; service mysql-server restart</code></p></li>
+
+<li><p>Go to http://<YourIP>/ (or <a href="http://localhost:8080">http://localhost:8080</a> in case of Vagrant) to start the installation.</p></li>
+</ol>
+
+<h3 id="now-with-ansible">Now with Ansible</h3>
+
+<p>So I spent an afternoon and got it done using Ansible! This is version 1 so I&rsquo;m sure it can be vastly improved. Oh! And it has a Vagrantfile in case you want to try it out locally with <code>vagrant up</code>.</p>
+
+<p>You can see the <a href="https://github.com/minac/ansible-anchor">code here</a> or the <a href="https://galaxy.ansible.com/minac/anchor/">Galaxy role here</a>!</p>
+
+<p>There is one step that I could not automate because it has to be done after the configuration and installation process of Anchor itself which you can do manually:</p>
+
+<p><code>rm -rf /var/www/html/anchor-cms/install</code></p>
+
+<p>Enjoy!</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/ansible/">ansible</a></li>
+      
+      <li><a href="https://minac.github.iotags/anchor/">anchor</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Standing DevOps</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+

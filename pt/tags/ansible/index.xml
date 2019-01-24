@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ansible on DevOps em pé</title>
+    <link>https://minac.github.io/pt/tags/ansible/</link>
+    <description>Recent content in Ansible on DevOps em pé</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 30 Mar 2017 13:06:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/pt/tags/ansible/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Uma receita ansible para o Gestor de Conteúdos Anchor</title>
+      <link>https://minac.github.io/pt/2017-03-30-ansible-anchor/</link>
+      <pubDate>Thu, 30 Mar 2017 13:06:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/2017-03-30-ansible-anchor/</guid>
+      <description>O que podes aprender com este post  Como instalar o Anchor CMS Como escrever uma receita ansible pronta para o Ansible Galaxy  O que nós queremos fazer De uma forma geral o que nós queremos fazer é o seguinte:
+ Actualizar o nosso sistema apt-get update &amp;amp;&amp;amp; apt-get upgrade Instalar os pacotes necessários apt-get install unzip vim apache2 libapache2-mod-php5 mysql-server php5-curl php5-mcrypt php5-gd php5-mysql Tornar a instalação MySQL mais segura Editar o /root/.</description>
+    </item>
+    
+  </channel>
+</rss>

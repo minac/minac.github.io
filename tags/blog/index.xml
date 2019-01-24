@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Blog on Standing DevOps</title>
+    <link>https://minac.github.io/tags/blog/</link>
+    <description>Recent content in Blog on Standing DevOps</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sat, 04 Mar 2017 16:12:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>New blog, new life</title>
+      <link>https://minac.github.io/2017-03-04-new-blog-new-life/</link>
+      <pubDate>Sat, 04 Mar 2017 16:12:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/2017-03-04-new-blog-new-life/</guid>
+      <description>Welcome! This blog has had several iterations over the years. Most of its life was in a self hosted WordPress, a bit in Anchor, a bit in Ghost and finally in Medium. As the continuous experiment that it is, now it&amp;rsquo;s a mix of Jekyll and Github Pages fronted by the amazing Cloudflare. It&amp;rsquo;s fun and easy to blog again and I don&amp;rsquo;t have to pay anyone to host me, so expect a bunch of small posts coming up!</description>
+    </item>
+    
+  </channel>
+</rss>

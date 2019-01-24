@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Whiteglass on DevOps em pé</title>
+    <link>https://minac.github.io/pt/tags/whiteglass/</link>
+    <description>Recent content in Whiteglass on DevOps em pé</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Tue, 04 Apr 2017 15:29:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/pt/tags/whiteglass/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Como tornar o Jekyll multilingue</title>
+      <link>https://minac.github.io/pt/2017-04-04-how-to-make-jekyll-multilingual/</link>
+      <pubDate>Tue, 04 Apr 2017 15:29:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/2017-04-04-how-to-make-jekyll-multilingual/</guid>
+      <description>Um dos poucos requisitos que existiam para este blog desde o início era que ele permitisse várias línguas. Isto é algo que se pode fazer facilmente com o WordPress, mas eu descobri as GitHub Pages e uma coisa levou a outra e… muitas horas mais tarde tinha um blog multilingue, após ter canibalizado o belo tema Whiteglass. Deixo aqui uma descrição de como decorreu o processo.
+Nota: O código não é bonito.</description>
+    </item>
+    
+  </channel>
+</rss>

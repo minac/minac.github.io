@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on DevOps em pé</title>
+    <link>https://minac.github.io/pt/tags/</link>
+    <description>Recent content in Tags on DevOps em pé</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Thu, 30 Mar 2017 13:06:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/pt/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Anchor</title>
+      <link>https://minac.github.io/pt/tags/anchor/</link>
+      <pubDate>Thu, 30 Mar 2017 13:06:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/anchor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Ansible</title>
+      <link>https://minac.github.io/pt/tags/ansible/</link>
+      <pubDate>Thu, 30 Mar 2017 13:06:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/ansible/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Blog</title>
+      <link>https://minac.github.io/pt/tags/blog/</link>
+      <pubDate>Sat, 04 Mar 2017 16:12:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/blog/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Cloudflare</title>
+      <link>https://minac.github.io/pt/tags/cloudflare/</link>
+      <pubDate>Fri, 12 May 2017 19:04:17 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/cloudflare/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Github</title>
+      <link>https://minac.github.io/pt/tags/github/</link>
+      <pubDate>Fri, 12 May 2017 19:04:17 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/github/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Jekyll</title>
+      <link>https://minac.github.io/pt/tags/jekyll/</link>
+      <pubDate>Tue, 04 Apr 2017 15:29:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/jekyll/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Multilingue</title>
+      <link>https://minac.github.io/pt/tags/multilingue/</link>
+      <pubDate>Tue, 04 Apr 2017 15:29:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/multilingue/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Mysql</title>
+      <link>https://minac.github.io/pt/tags/mysql/</link>
+      <pubDate>Sun, 09 Apr 2017 12:33:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Podcasts</title>
+      <link>https://minac.github.io/pt/tags/podcasts/</link>
+      <pubDate>Thu, 30 Mar 2017 13:23:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/podcasts/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Receitas</title>
+      <link>https://minac.github.io/pt/tags/receitas/</link>
+      <pubDate>Sun, 09 Apr 2017 12:33:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/receitas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sobre</title>
+      <link>https://minac.github.io/pt/tags/sobre/</link>
+      <pubDate>Mon, 20 Mar 2017 21:07:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/sobre/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Whiteglass</title>
+      <link>https://minac.github.io/pt/tags/whiteglass/</link>
+      <pubDate>Tue, 04 Apr 2017 15:29:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/tags/whiteglass/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

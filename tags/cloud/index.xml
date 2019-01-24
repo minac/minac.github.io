@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Cloud on Standing DevOps</title>
+    <link>https://minac.github.io/tags/cloud/</link>
+    <description>Recent content in Cloud on Standing DevOps</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 25 May 2014 13:30:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/tags/cloud/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to deny hot linking from your AWS S3 files</title>
+      <link>https://minac.github.io/2015-05-25-how-to-deny-hot-linking-from-your-aws-s3-files/</link>
+      <pubDate>Sun, 25 May 2014 13:30:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/2015-05-25-how-to-deny-hot-linking-from-your-aws-s3-files/</guid>
+      <description>There are many good people in the web, but there are also those who are lazy and instead of creating content themselves or even hosting it, they will want to abuse the existing stuff online. For example, say you have a bucket (originally) called mybucket and a file called … myfile.jpg. You uploaded the file to AWS S3 and now you are serving it from there through a webpage that we’ll call test.</description>
+    </item>
+    
+    <item>
+      <title>S3/Cloudfront Access Denied</title>
+      <link>https://minac.github.io/2015-05-20-s3-cloudfront-access-denied/</link>
+      <pubDate>Tue, 20 May 2014 13:30:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/2015-05-20-s3-cloudfront-access-denied/</guid>
+      <description>So you finally listened the SEO guys who keep saying that the images on your website have to be fast and you decided to move them from your small cloud server to an AWS S3 bucket? You managed to create the bucket and even enabled Cloudfront on that bucket so that the images (or other files) are not only in one region of AWS but everywhere in the world (well, every edge node on AWSs Content Delivery Network).</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mysql on DevOps em pé</title>
+    <link>https://minac.github.io/pt/tags/mysql/</link>
+    <description>Recent content in Mysql on DevOps em pé</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 09 Apr 2017 12:33:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/pt/tags/mysql/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>As minhas receitas MySQL</title>
+      <link>https://minac.github.io/pt/2017-04-09-mysql-cookbook/</link>
+      <pubDate>Sun, 09 Apr 2017 12:33:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/2017-04-09-mysql-cookbook/</guid>
+      <description>Ao longo dos anos fui acumulando notas sobre operações rápidas e frequentes que precisava de executar numa série de tecnologias. Até agora, estas receitas têm sido apenas para minha referência e tentam ser a documentação que eu gostaria de ver online acerca de como fazer rapidamente a tarefa X na tecnologia Y. Hoje decidi partilhar algumas notas sobre uma dessas tecnologias, o sistema de gestão de bases de dados MySQL.</description>
+    </item>
+    
+  </channel>
+</rss>

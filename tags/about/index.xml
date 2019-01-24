@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>About on Standing DevOps</title>
+    <link>https://minac.github.io/tags/about/</link>
+    <description>Recent content in About on Standing DevOps</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 20 Mar 2017 21:07:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/tags/about/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hi, I&#39;m Miguel</title>
+      <link>https://minac.github.io/about/</link>
+      <pubDate>Mon, 20 Mar 2017 21:07:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/about/</guid>
+      <description>{:height=&amp;ldquo;300px&amp;rdquo; width=&amp;ldquo;200px&amp;rdquo;}
+I am a Linux Systems Administrator and Cloud Architect (with a slant to DevOps methods and culture). I am also a slow moving digital nomad, photographer, European-Portuguese and co-founder of a food tour company.
+I provide consultancy in the form of training, infrastructure-as-code, cloud migrations and best practice implementations. I&amp;rsquo;ve been told that I&amp;rsquo;m a &amp;ldquo;sociable geek&amp;rdquo; as I aim to be the bridge between the tech and non-tech world.</description>
+    </item>
+    
+  </channel>
+</rss>

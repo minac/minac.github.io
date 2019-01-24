@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>Como apontar múltiplos domínios personalizados para o GitHub Pages usando Cloudflare - DevOps em pé</title>
+  
+  <meta name="description" content="Recentemente eu criei uma empresa-de-um-só-homem para fazer consultoria informática (até arranjei uns cartões de negócios fixes!). O nome da empresa é Curious Elephant e parte do pacote de criação da empresa em Portugal é que o Estado Português oferece um domínio .pt grátis (curious-elephant.pt) e alojamento das páginas por um ano. O que eu queria fazer com isto era esquecer o alojamento das páginas e apontar o domínio da empresa para este website.">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="DevOps em pé">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">DevOps em pé</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">Como apontar múltiplos domínios personalizados para o GitHub Pages usando Cloudflare</h1>
+    <p class="post-meta">Miguel David · 2017.5.12</p>
+  </header>
+  <div class="post-content">
+
+<p>Recentemente eu criei uma empresa-de-um-só-homem para fazer consultoria informática (até arranjei uns cartões de negócios fixes!). O nome da empresa é <em>Curious Elephant</em> e parte do pacote de criação da empresa em Portugal é que o Estado Português oferece um domínio .pt grátis (curious-elephant.pt) e alojamento das páginas por um ano. O que eu queria fazer com isto era esquecer o alojamento das páginas e apontar o domínio da empresa para este website.</p>
+
+<h3 id="o-que-podes-aprender-com-este-post">O que podes aprender com este post</h3>
+
+<ul>
+<li>Como <strong>não</strong> adicionar vários domínios personalizados ao GitHub Pages</li>
+<li>Como fazer redirecionamento de domínios no Cloudflare</li>
+</ul>
+
+<h3 id="a-abordagem-naive">A abordagem <em>naive</em></h3>
+
+<p>Como podem (ou não) ter reparado, este site é feito/alojado em Jekyll e GitHub Pages. Também já tem configurado um domínio personalizado a apontar para ele (migueldavid.eu).</p>
+
+<p>De uma forma ingénua, tentei então simplesmente criar um registo DNS CNAME de <code>curious-elephant.pt</code> para <code>minac.github.io</code> e adicionar o novo domínio ao ficheiro CNAME neste repositório. <strong>Não funcionou</strong>.</p>
+
+<h3 id="a-abordagem-cloudflare">A abordagem Cloudflare</h3>
+
+<p>Li na <a href="https://help.github.com/articles/troubleshooting-custom-domains/#multiple-domains-in-cname-file">ajuda das GitHub Pages</a> e no <a href="http://stackoverflow.com/questions/16454088/can-github-pages-cname-file-contain-more-than-one-domain">StackOverflow</a> que ter vários domínios personalizados a apontar para um webiste no github não é possível.</p>
+
+<p>Uma pessoa pode criar um segundo repositório e colocar lá uma nova cópia do código e ter um CNAME diferente para cada repositório, mas isto pareceu-me uma abordagem totó.</p>
+
+<p>Mas existe magia de redirecionamento do DNS na maioria dos <em>registrars</em> e dos gestores de domínios. Então lá fui ver no Cloudflare.</p>
+
+<p>Para ser claro, aqui estão os registos relevantes DNS (os IPs são do github):</p>
+
+<table>
+<thead>
+<tr>
+<th>Tipo de registo</th>
+<th>Nome</th>
+<th>Valor</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>A</td>
+<td>migueldavid.eu</td>
+<td>192.30.252.153</td>
+</tr>
+
+<tr>
+<td>A</td>
+<td>migueldavid.eu</td>
+<td>192.30.252.154</td>
+</tr>
+
+<tr>
+<td>CNAME</td>
+<td>www</td>
+<td>migueldavid.eu</td>
+</tr>
+</tbody>
+</table>
+
+<p>Uma pesquisa rápida na zona de ajuda deles levou-me às <code>Page Rules</code> onde rapidamente criei o seguinte:</p>
+
+<p><img src="/assets/pagerules.png" alt="Page Rule no Cloudflare" /></p>
+
+<p>E voilà! Após cerca de um minuto eu já podia inserir o meu novo domínio e vir ter a este website!</p>
+
+<p><strong>BÓNUS</strong>: Esta regra foi preparada para aceitar argumentos por isso se eu escrever algo tipo <code>curious-elephant.pt/about</code> vou parar directamente a <code>migueldavid.eu/about</code>. :)</p>
+
+<p>Espero que isto ajude alguém!</p>
+
+<p>Se encontrares algum erro ou problema, por favor cria um <a href="https://github.com/minac/minac.github.io/issues">issue aqui</a>.</p>
+
+<p>Para uma explicação mais detalhada (em Inglês) sobre os registos DNS e o redirecionamento http &gt; https, vê o <a href="https://olney.ai/category/2018/07/30/ai.html">post do Andrew Molney&rsquo;s</a>.</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/github/">github</a></li>
+      
+      <li><a href="https://minac.github.iotags/cloudflare/">cloudflare</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 DevOps em pé</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+

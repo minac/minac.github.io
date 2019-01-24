@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sobre on DevOps em pé</title>
+    <link>https://minac.github.io/pt/tags/sobre/</link>
+    <description>Recent content in Sobre on DevOps em pé</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Mon, 20 Mar 2017 21:07:07 +0000</lastBuildDate>
+    
+	<atom:link href="https://minac.github.io/pt/tags/sobre/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Olá, sou o Miguel</title>
+      <link>https://minac.github.io/pt/sobre/</link>
+      <pubDate>Mon, 20 Mar 2017 21:07:07 +0000</pubDate>
+      
+      <guid>https://minac.github.io/pt/sobre/</guid>
+      <description>{:height=&amp;ldquo;300px&amp;rdquo; width=&amp;ldquo;200px&amp;rdquo;}
+Eu sou um Administrator de Sistemas Linux (RedHat, Debian), Arquitecto de sistemas em Cloud (AWS, Openstack, GCP) com tendência para os métodos e cultura DevOps. Também sou um nómada digital lento, fotógrafo amador, Português, Europeu e co-fundador de uma empresa de tours gastronómicas.
+Forneço serviços de consultoria na forma de treino, infra-estrutura-em-código, migrações para a cloud e implementação de boas práticas. Já me disseram que sou um &amp;ldquo;geek&amp;rdquo; social porque tento fazer a ponte entre pessoas técnicas e não técnicas.</description>
+    </item>
+    
+  </channel>
+</rss>

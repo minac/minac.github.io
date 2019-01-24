@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>S3/Cloudfront Access Denied - Standing DevOps</title>
+  
+  <meta name="description" content="So you finally listened the SEO guys who keep saying that the images on your website have to be fast and you decided to move them from your small cloud server to an AWS S3 bucket? You managed to create the bucket and even enabled Cloudfront on that bucket so that the images (or other files) are not only in one region of AWS but everywhere in the world (well, every edge node on AWSs Content Delivery Network).">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="Standing DevOps">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">Standing DevOps</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">S3/Cloudfront Access Denied</h1>
+    <p class="post-meta">Miguel David · 2014.5.20</p>
+  </header>
+  <div class="post-content"><p>So you finally listened the SEO guys who keep saying that the images on your
+website have to be fast and you decided to move them from your small cloud
+server to an AWS S3 bucket?
+You managed to create the bucket and even enabled Cloudfront on that bucket so that the images (or other files) are not only in one region of AWS but everywhere in the world (well, every edge node on AWSs Content Delivery Network). This will make sure that someone in Japan will see your site as fast as someone in Oregon, USA.
+You then uploaded the files and changed your website code to point, not to your local server files but to the cloudfront URL (or S3 bucket URL), but when the moment of truth comes&hellip; The images are not showing up and when you go directly to the link of the image you get a nasty XML saying “Access Denied”.</p>
+
+<p>The good news is that you are not the first person to go through this so the process of adding the permissions is straigh forward:</p>
+
+<ol>
+<li>Go to AWS S3 and click on your bucket</li>
+<li>Click on properties</li>
+<li>Click on Edit bucket policy</li>
+
+<li><p>Copy the
+<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/example-bucket-policies.html#example-bucket-policies-use-case-2">following</a>
+into the text box, replace <em>examplebucket</em> with your bucket name and you’re done</p>
+
+<p>{
+  &ldquo;Version&rdquo;:&ldquo;2012-10-17&rdquo;,
+  &ldquo;Statement&rdquo;:[
+    {
+      &ldquo;Sid&rdquo;:&ldquo;AddPerm&rdquo;,
+      &ldquo;Effect&rdquo;:&ldquo;Allow&rdquo;,
+      &ldquo;Principal&rdquo;: &ldquo;<em>&rdquo;,
+      &ldquo;Action&rdquo;:[&ldquo;s3:GetObject&rdquo;],
+      &ldquo;Resource&rdquo;:[&ldquo;arn:aws:s3:::examplebucket/</em>&rdquo;]
+    }
+  ]
+}</p></li>
+</ol>
+
+<p>What are we doing here exactly? We are allowing everyone in the world to be able
+to get objects from your S3 bucket.
+Don’t worry, no-one will have access to creating/deleting/changing your files, only to see all the files in that bucket (which should be the bucket with your publicly available web files anyway).</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/aws/">aws</a></li>
+      
+      <li><a href="https://minac.github.iotags/cloud/">cloud</a></li>
+      
+      <li><a href="https://minac.github.iotags/s3/">s3</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Standing DevOps</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+

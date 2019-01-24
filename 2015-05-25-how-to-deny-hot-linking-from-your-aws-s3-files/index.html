@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
+  <title>How to deny hot linking from your AWS S3 files - Standing DevOps</title>
+  
+  <meta name="description" content="There are many good people in the web, but there are also those who are lazy and instead of creating content themselves or even hosting it, they will want to abuse the existing stuff online. For example, say you have a bucket (originally) called mybucket and a file called … myfile.jpg. You uploaded the file to AWS S3 and now you are serving it from there through a webpage that we’ll call test.">
+  <meta name="author" content="Miguel David">
+  
+  <link href="https://minac.github.iocss/font.css" rel="stylesheet">
+  <link href="https://minac.github.iocss/atom-one-dark.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+  <link href="https://minac.github.iocss/style.css" rel="stylesheet">
+  
+  <link rel="apple-touch-icon" href="https://minac.github.ioimg/apple-touch-icon.png">
+  <link rel="icon" href="https://minac.github.ioimg/favicon.ico">
+  
+  <meta name="generator" content="Hugo 0.53" />
+  
+  <link rel="alternate" type="application/atom+xml" href="https://minac.github.ioindex.xml" title="Standing DevOps">
+  
+</head>
+<body class="single">
+  <header class="header">
+    
+    <p class="title"><a href="https://minac.github.io">Standing DevOps</a></p>
+    
+    <button class="menu-toggle" type="button"></button>
+    <nav class="menu">
+      <ul>
+        
+        
+      </ul>
+    </nav>
+  </header>
+  <main class="main">
+
+<article class="post post-view">
+  <header class="post-header">
+    <h1 class="post-title">How to deny hot linking from your AWS S3 files</h1>
+    <p class="post-meta">Miguel David · 2014.5.25</p>
+  </header>
+  <div class="post-content"><p>There are many good people in the web, but there are also those who are lazy and
+instead of creating content themselves or even hosting it, they will want to
+abuse the existing stuff online. For example, say you have a bucket (originally)
+called <em>mybucket</em> and a file called … <em>myfile.jpg</em>. You uploaded the file to AWS
+S3 and now you are serving it from there through a webpage that we’ll call
+<em>test.html</em>.<br> Here’s what the URL of the file could look like:<br>
+<a href="https://s3.eu-central-1.amazonaws.com/mybucket/myfile.jpg">https://s3.eu-central-1.amazonaws.com/mybucket/myfile.jpg</a></p>
+
+<p>And your test page could be like:</p>
+
+<pre><code class="language-html">&lt;html&gt;&lt;body&gt;&lt;br&gt; Hello&lt;br&gt; &lt;img
+src=”https://s3.eu-central-1.amazonaws.com/mybucket/myfile.jpg&quot; alt=”” /&gt;&lt;br&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Now Mr. Evil comes along and likes your myfile.jpg but does not want to pay for
+the bandwidth for when someone goes into his website to see your myfile.jpg. How
+does he do it? Simply:</p>
+
+<pre><code class="language-html">&lt;html&gt;&lt;body&gt;&lt;br&gt; Mr. Evil’s webpage&lt;br&gt; &lt;img
+src=”https://s3.eu-central-1.amazonaws.com/mybucket/myfile.jpg&quot; alt=”” /&gt;&lt;br&gt;
+&lt;/body&gt;&lt;/html&gt;
+</code></pre>
+
+<p>Every time someone visits his page, not only are they seeing your file but the
+bandwidth charges are coming to you because they are in effect accessing the
+file in your AWS account!</p>
+
+<p>How to prevent this? Using a <em>bucket policy</em>. Go to <strong>S3</strong> in your account, then
+click on <strong>your bucket</strong>, then click on <strong>Permissions</strong> and <strong>Edit bucket
+policy</strong>. You will see an empty text box. Copy paste the code below and adjust
+to your bucket name and your website URLs:</p>
+
+<pre><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Sid&quot;: &quot;AddPerm&quot;,
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: &quot;*&quot;,
+            &quot;Action&quot;: &quot;s3:GetObject&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::mybucket/*&quot;
+        },
+        {
+            &quot;Sid&quot;: &quot;Deny requests for hot-linking.&quot;,
+            &quot;Effect&quot;: &quot;Deny&quot;,
+            &quot;Principal&quot;: &quot;*&quot;,
+            &quot;Action&quot;: &quot;s3:GetObject&quot;,
+            &quot;Resource&quot;: &quot;arn:aws:s3:::mybucket/*&quot;,
+            &quot;Condition&quot;: {
+                &quot;StringNotLike&quot;: {
+                    &quot;aws:Referer&quot;: [
+                        &quot;http://*.mywebsite.com/*&quot;,
+                        &quot;https://*.mywebsite.com/*&quot;
+                    ]
+                }
+            }
+        }
+    ]
+}
+</code></pre>
+
+<p><strong>NOTE:</strong> If you have Cloudfront in front of your S3 bucket, then other rules
+apply. I’ll cover that in another post.</p>
+
+<p>What is happening here is that in the first statement we are allowing everyone
+to get our files in this bucket (required for web access to the world), but then
+in the second statement we are saying that S3 should only allow the objects to
+be available if the referral is a variation of mywebsite.com (in this case with
+and without www and https).</p>
+
+<p>What happens now? When anyone visits your test page they will be able to see the
+file, but when they go to Mr. Evil’s page they will see a broken link where the
+image should be. :)</p>
+
+<p>Take that Mr. Evil!</p>
+</div>
+  <footer class="post-footer">
+    
+    <ul class="post-tags">
+      
+      <li><a href="https://minac.github.iotags/aws/">aws</a></li>
+      
+      <li><a href="https://minac.github.iotags/cloud/">cloud</a></li>
+      
+      <li><a href="https://minac.github.iotags/s3/">s3</a></li>
+      
+    </ul>
+    
+  </footer>
+  
+  
+  
+  
+</article>
+</main>
+<footer class="footer">
+  <span>&copy; 2019 Standing DevOps</span>
+  <span>&middot;</span>
+  <span>Powered by <a href="https://gohugo.io/" rel="noopener" target="_blank">Hugo️️</a>️</span>
+  <span>&middot;</span>
+  <span>Designed by <a href="http://21beats.com/" rel="noopener" target="_blank">️21beats️</a>️</span>
+</footer>
+<script src="https://minac.github.iojs/instantclick.min.js" data-no-instant></script>
+<script data-no-instant>InstantClick.init();</script>
+<script src="https://minac.github.iojs/highlight.min.js" data-no-instant></script>
+<script data-no-instant>
+  addMenuListener();
+  InstantClick.on('change', function() {
+    addMenuListener();
+  });
+  function addMenuListener() {
+    var $toggle = document.querySelector('.menu-toggle');
+    var $body = document.querySelector('body');
+    $toggle.addEventListener('click', function() {
+      $body.classList.toggle('noscroll');
+    }, false);
+  }
+</script>
+</body>
+</html>
+
